@@ -1,0 +1,32 @@
+@font-face {font-family: Domitian; src: url('/style/Domitian-Roman.otf')}
+@font-face {font-family: Domitian; font-weight: bold; src: url('/style/Domitian-Bold.otf')}
+@font-face {font-family: Domitian; font-style: oblique; src: url('/style/Domitian-Italic.otf')}
+@font-face {font-family: Domitian; font-style: oblique; font-weight: bold; src: url('/style/Domitian-BoldItalic.otf')}
+@font-face {font-family: 'Yanone Kaffeesatz'; src: url('/style/YanoneKaffeesatz-Regular.ttf')}
+@font-face {font-family: 'Yanone Kaffeesatz'; font-weight: bold; src: url('/style/YanoneKaffeesatz-Bold.ttf')}
+
+body {
+    font-family: Domitian, serif;
+    color: white;
+    background: #4e3766;
+}
+
+a:link {color: lightblue;}
+a:visited {color: lavender;}
+a:active {color: pink;}
+
+h1, h2, h3, h4, h5, h6 {font-family: 'Yanone Kaffeesatz';}
+
+div.doc-capsule {
+    background: #171717;
+    max-width: 96ex;
+    margin: 1em auto;
+    padding: 0.5em 2.5em;
+    border-radius: 1.5em;
+}
+
+footer {
+    font-size: small;
+    text-align: center;
+    color: #e9e9e9;
+}
