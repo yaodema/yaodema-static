@@ -2,15 +2,15 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 <title>blog - Yao's webzone</title>
 <subtitle>my writing, and updates on the state of the 'zone</subtitle>
-<link href="http://yaodema.com/atom.xml" rel="self"/>
+<link href="https://yaodema.com/atom.xml" rel="self"/>
 <author><name>yaodema</name></author>
 <id>urn:uuid:71ab8a60-ec2a-4d28-b82e-7e76d5c27ffc</id>
-<updated>2024-09-29T01:57:30Z</updated>
+<updated>2024-09-29T13:57:30Z</updated>
 <entry>
     <title>this exists</title>
-    <link href="http://yaodema.com/blog/this-exists.html" rel="self"/>
+    <link href="https://yaodema.com/blog/this-exists.html" rel="self"/>
     <id>urn:uuid:2041404a-7bc7-471c-a350-cab8b39f9821</id>
-    <updated>2024-09-29T01:57:30Z</updated>
+    <updated>2024-09-29T13:57:30Z</updated>
     <published>2024-09-29T01:57:30Z</published>
     <content type="html"><p>an empty Atom feed might make for upset feed readers, so I'm making
 		this stub of an article so there's <em>something</em> here to look
