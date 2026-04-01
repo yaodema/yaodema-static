@@ -1,0 +1,117 @@
+<!doctype html>
+<html><head>
+<meta property="og:title" content="Base64 ↔ Hexagrams" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://yaodema.com/tools/base64hexagrams.html" />
+<meta property="og:image" content="https://yaodema.com/tools/base64hexagrams.png" />
+<meta property="og:description" content="A converter between Base64 and Unicode Yijing Hexagram Symbols" />
+<script lang="javascript">
+// Convert base64 to and from Yijing hexagrams in any of three orders
+
+// Base64 characters order, '=' is padding symbol
+const base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
+const base64_urls = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_='
+
+// Yijing hexagrams in different orders;
+// in all cases, final character is padding yin/yang symbol, as per qntm's precedent.
+const hex_bigend = '䷁䷗䷆䷒䷎䷣䷭䷊䷏䷲䷧䷵䷽䷶䷟䷡䷇䷂䷜䷻䷦䷾䷯䷄䷬䷐䷮䷹䷞䷰䷛䷪䷖䷚䷃䷨䷳䷕䷑䷙䷢䷔䷿䷥䷷䷝䷱䷍䷓䷩䷺䷼䷴䷤䷸䷈䷋䷘䷅䷉䷠䷌䷫䷀☯'
+const hex_fuxi = '䷁䷖䷇䷓䷏䷢䷬䷋䷎䷳䷦䷴䷽䷷䷞䷠䷆䷃䷜䷺䷧䷿䷮䷅䷭䷑䷯䷸䷟䷱䷛䷫䷗䷚䷂䷩䷲䷔䷐䷘䷣䷕䷾䷤䷶䷝䷰䷌䷒䷨䷻䷼䷵䷥䷹䷉䷊䷙䷄䷈䷡䷍䷪䷀☯'
+const hex_kingwen = '䷀䷁䷂䷃䷄䷅䷆䷇䷈䷉䷊䷋䷌䷍䷎䷏䷐䷑䷒䷓䷔䷕䷖䷗䷘䷙䷚䷛䷜䷝䷞䷟䷠䷡䷢䷣䷤䷥䷦䷧䷨䷩䷪䷫䷬䷭䷮䷯䷰䷱䷲䷳䷴䷵䷶䷷䷸䷹䷺䷻䷼䷽䷾䷿☯'
+
+// lookup maps
+const enmap = {
+  'base64': base64,
+  'base64url': base64_urls,
+  'hexbigend': hex_bigend,
+  'hexfuxi': hex_fuxi,
+  'hexkingwen': hex_kingwen
+}
+const demap = {
+  'hexbigend': {},
+  'hexfuxi': {},
+  'hexkingwen': {},
+  'base64': {}
+}
+for (let i = 0; i <= 65; i++) {
+  hex = demap['hex']
+  b64 = demap['base64']
+  demap['hexbigend'][hex_bigend[i]] = demap['hexfuxi'][hex_fuxi[i]]
+   = demap['hexkingwen'][hex_kingwen[i]] = i;
+  b64[base64[i]] = i
+  if(i > 61)
+    b64[base64_urls[i]] = i;
+}
+b64[' '] = b64['?'] = 63 // spaces and questionmarks become to / or _
+b64[','] = b64['.'] = b64['!'] = b64['*'] = b64["'"] = 62 // ,.!*' become + or -
+demap['base64url'] = demap['base64'] // aliasing, to make conversion simpler
+
+// convert from one base 64 format to another
+// s=string, ib=input-base, ob=output-base
+// base options are base64, base64url, hexbigend, hexfuxi, hexkingwen
+const convert64 = (s, ib, ob) =>
+  s.split('').map(b => enmap[ob][demap[ib][b]]).join('')
+
+// TODO: maybe handle binary encoding as well, little endian
+</script>
+  <title>Base64 ↔ Hexagrams</title>
+  <style>
+    body {
+      padding: 0ex 3ex;
+    }
+    button {
+      margin: 1ex;
+      font-size: large;
+    }
+  </style>
+</head>
+<body>
+<h1>Base64 ↔ Hexagrams</h1>
+<form style="width: fit-content">
+  <h2>Base64:</h3>
+  <p><textarea name="b64" id="b64" rows="6" cols="64"></textarea></p>
+  <p><input type="checkbox" name="urlsafe" id="urlsafe"><label for="urlsafe"> URL Safe?</label></p>
+  <div style="display: flex; justify-content: space-around;">
+    <button type="button" onclick="base64_to_hexagrams_click()">↓ Encode</button>
+    <button type="button" onclick="hexagrams_to_base64_click()">Decode ↑</button>
+  </div>
+  <h2>Hexagrams:</h3>
+  <p><textarea name="hg" id="hg" rows="6" cols="64"></textarea></p>
+  <p><b>Order:</b>
+    <input type="radio" name="hexorder" id="hexfuxi" value="fuxi" checked /> <label for="hexfuxi">Fuxi</label>
+    <input type="radio" name="hexorder" id="hexkingwen" value="kingwen" /> <label for="hexkingwen">King Wen</label>
+    <input type="radio" name="hexorder" id="hexbigend" value="bigend" /> <label for="hexfuxi">Big Endian</label>
+  </p>
+</form>
+<h2>Explanation</h2>
+<div style="width: 64ex; padding: 0ex 1ex; text-align: justify;">
+  <p>The Yijing (or I Ching) hexagrams are a Chinese divination system dating back nearly 3000 years.
+  As the system produces six results from a binary choice each time, it's equivalent to a six bit
+  number, or one base 64 value. This tool converts Base64 characters into hexagrams, or hexagrams
+  into Base64.</p>
+  <p>(honestly I created this originally as a shitpost, but hey, it may have its uses)</p>
+  <p>Base64 includes all capital and lower case English alphabet letters, digits 0-9, and the + and /
+  characters. This tool will automatically convert ? and spaces to /, and , . ! * ' to +. <em>any
+  other characters will be removed when converting.</em></p>
+  <p>The hexagram order refers to one of three orders used for the hexagrams. Traditionally, these
+  orders are Fuxi and King Wen. Fuxi is a little-endian binary order, where 1 is a solid line and 0
+  is a broken line. King Wen order is older, and has a logic lost to time, but it is the order used
+  for unicode characters. "Big Endian" is not a traditional ordering, but a different encoder only
+  used that order, so I'm including it to decode anything that one might encounter using it.</p>
+  <p>If you want to understand anything that <em>I (Enys, yaodema)</em> post online in a pile of hexagrams,
+  use this tool, with "Order" set to Fuxi; I will not use other orderings, I don't like them much.
+  They're only included for completion's sake!</p>
+  <p>Happy 'Crypting!</p>
+</div>
+<script lang="javascript">
+  const b64 = document.getElementById("b64");
+  const hg = document.getElementById("hg");
+  const hexorder = document.forms[0].elements["hexorder"];
+  const urlsafe = document.getElementById("urlsafe");
+  function base64_to_hexagrams_click() {
+    hg.value = convert64(b64.value, 'base64', 'hex' + hexorder.value)
+  }
+  function hexagrams_to_base64_click() {
+    b64.value = convert64(hg.value, 'hex' + hexorder.value, 'base64' + (urlsafe.checked ? 'url' : ''))
+  }
+</script>
+</body></html>
